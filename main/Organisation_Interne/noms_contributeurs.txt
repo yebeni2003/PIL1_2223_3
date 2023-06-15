@@ -4,7 +4,7 @@ Nom et prénoms                             Filière                 Noms d'util
 1-AMEGBEDJI Romuald Précieux             --IA--                   Essogbé
 2-YEBENI KOUAGOU Marc-Aurel              --SI--                   yebeni2003
 3-TOFFA Quentin Siméon                on --SE&IoT--              TOFFA-Quentin-Simeon
-4-
+4-VITOUGAN Iris Ulrichia Mervédie    on --GL--                         Vitougan
 5-
 6
 7-
