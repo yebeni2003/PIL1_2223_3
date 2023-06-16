@@ -5,7 +5,7 @@ Nom et prénoms                             Filière                 Noms d'util
 2-YEBENI KOUAGOU Marc-Aurel              --SI--                   yebeni2003
 3-TOFFA Quentin Siméon                 --SE&IoT--                 TOFFA-Quentin-Simeon
 4-VITOUGAN Iris Ulrichia Mervédie    on --GL--                         Vitougan
-5-TONON Deo-gracias David --IA--  David15tonon
+5-TONON Deo-gracias David        --IA--        David15tonon
 6
 7-
 8-
