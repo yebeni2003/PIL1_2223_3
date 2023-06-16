@@ -1,5 +1,73 @@
 /* Fichier style.css */
 .container {
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    position: absolute;
+    bottom: 40%;
+    right: 40%;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+/* Fichier style.css */
+.container {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+/* Fichier style.css */
+.container {
     width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -17,11 +85,127 @@ p {
     margin-bottom: 20px;
 }
 
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+.container {
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.card {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #007bff;
+    color: #fff;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 4px;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+} 
+/* Fichier style.css */
+.container {
+    width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+a {
+    text-decoration: none;
+    color: #555;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+/* Réinitialisation des styles par défaut */
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+/* Styles pour l'en-tête */
+header {
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+/* Styles pour la barre de navigation */
+nav {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+/* Styles pour le contenu principal */
+main {
+    padding: 20px;
+}
+
+/* Styles pour le pied de page */
+footer {
+    background-color: #f2f2f2;
+    padding: 10px;
+    text-align: center;
 }
