@@ -16,3 +16,4 @@ class EtudiantConnexion(models.Model):
     etudiant = models.OneToOneField(Etudiant, on_delete=models.CASCADE)
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=128)
+    

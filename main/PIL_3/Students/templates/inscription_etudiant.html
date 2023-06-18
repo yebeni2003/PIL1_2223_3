@@ -3,14 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Inscription Étudiant</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.js"></script>
 </head>
 <body>
+    
+
+    
+
     <form method="POST" action="{% url 'inscription' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">S'inscrire</button>
     </form>
-    
+
+    {% if success %}
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Inscription réussie',
+            
+        }).then(function() {
+            window.location.href = "{% url 'page_succes' nom=name prenom=surname %}";
+        });
+    </script>
+    {% endif %}
+
 </body>
 </html>
