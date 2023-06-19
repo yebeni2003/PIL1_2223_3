@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Étudiant</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.3/dist/sweetalert2.min.js"></script>
+</head>
+<body>
+    
+<h1>Sign Up</h1>
+<style>
+    h5{
+        color:red
+    }
+</style>
+{%for message in messages%}
+{%if message != True %}
+<h5>{{message}}</h5>
+{%endif%}
+{%endfor%}
+<form method="POST" action="register">
+    {% csrf_token%}
+    <p>Username:</p>
+    <input type="text" name="username"/>
+    <p>Email:</p>
+    <input type="email" name="email">
+    <p>Password:</p>
+    <input type="password" name="password">
+    <p>Repeat password:</p>
+    <input type="password" name="password2">
+    <br>
+
+    <input type="submit">
+
+    {%for message in messages%}
+    {% if message %}
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Inscription réussie',
+            
+        });
+    </script>
+    {% endif %}
+    {%endfor%}
+</form>
+</body>
