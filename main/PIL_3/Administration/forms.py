@@ -1,8 +1,8 @@
-from .models import User1 
+from .models import Administrator
 #formulaire d'inscription
 class signup(forms.ModelForm):
     class Meta:
-        model = User1
+        model = Administrator
         fields = ['name','prenom','email','phone','age','password']
         widgets = {
             'name': forms.TextInput(attrs={'class','form-control'})
