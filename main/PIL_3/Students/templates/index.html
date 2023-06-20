@@ -1,1 +1,12 @@
-j
+{% extends 'base.html' %}
+{% block content  %}
+{% if user.is_authenticated  %}
+<h3>Bonjour {{firstname}}.Bienvenue chez Essogbé</h3>
+<button type="submit"><a href="/logout">Se déconnecter</a></button>
+
+{% else %}
+
+<button type="submit"><a href="/register">S'enrégistrer</a></button>
+<button type="submit"><a href="/login">Se connecter</a></button>
+{% endif %}
+{% endblock  %}

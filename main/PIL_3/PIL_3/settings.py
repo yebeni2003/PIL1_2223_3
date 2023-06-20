@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Admnistration',
+    'Administration',
     'Students',
     'Teachers',
 ]
@@ -58,7 +58,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR,''),
+           
                 os.path.join(BASE_DIR,'Teachers/templates'),
                 os.path.join(BASE_DIR,'Administration/templates'),
                 os.path.join(BASE_DIR,'Students/templates'),
