@@ -2,8 +2,8 @@ from django.db import models
 
 # Create your models here.
 class Administrator(models.Model):
-    name = models.CharField(max_length=20, primary_key=True)
-    email = models.EmailField()
+    name = models.CharField(max_length=20)
+    email = models.EmailField( primary_key=True)
     password = models.CharField( max_length=100) 
 #La table pour les cours
 class Cours(models.Model):
