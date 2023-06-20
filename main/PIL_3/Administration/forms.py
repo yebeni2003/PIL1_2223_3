@@ -8,7 +8,5 @@ class signup(forms.ModelForm):
             'name': forms.TextInput(attrs={'class','form-control'})
             'prenom': forms.TextInput(attrs={'class','form-control'})
             'email' : forms.EmailInput(attrs={'class','form-control'})
-            'phone': forms.PasswordInput(render_value=True, attrs={'class','form-control'})
-            'age' : forms.NumberInput(attrs={'class','form-control'})
             'password' : forms.TextInput(attrs={'class','form-control'})
         }
