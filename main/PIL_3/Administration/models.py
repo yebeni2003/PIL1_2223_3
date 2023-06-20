@@ -8,7 +8,7 @@ class Administrator(models.Model):
 class Emploi(models.Model):
     cours = models.CharField(max_length=200)
     heure = models.CharField(max_length=5)
-    duree_heure = models.IntField()
+    duree_heure = models.IntegerField()
 class AdministratorConnexion(models.Model):
     etudiant = models.OneToOneField(Etudiant, on_delete=models.CASCADE)
     username = models.CharField(max_length=50)
