@@ -7,7 +7,8 @@ class Administrator(models.Model):
     password = models.CharField( max_length=100) 
 #La table pour les cours
 class Cours(models.Model):
-    heure = models.CharField(max_length=5)
+    date = models.DateField()
+    heure = models.TimeField()
     nom = models.CharField(max_length=200)
     masse_horaire = models.IntegerField()
     nom_professeur = models.CharField(max_length=200)
