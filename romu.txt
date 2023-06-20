@@ -1,0 +1,26 @@
+
+from django.db import models
+from django.contrib.auth.models import User
+# Model variables
+  Ceci est important pour les clés étrangères
+Foreignkey name = models.ForeignKey(Table_name, null_argument, Ondelete_arguemnt)
+# Create your models here.
+class Bride(models.Model):
+    Example_name = models.CharField(max_length=200,null=True)
+    Example_age = models.IntegerField(null=True)
+    Example_thegai = models.CharField(max_length=200,null=True)
+    Example_State =  models.CharField(max_length=50,null=True)
+    Example_District = models.CharField(max_length=50,null=True)
+    Example_Address = models.TextField(null=True)
+    Example_Phone = models.BigIntegerField(null=True)
+    Example_profession = models.CharField(max_length=200,null=True)
+    Example_salary = models.BigIntegerField(null=True)
+    Example_Under_Graduation_Degree = models.CharField(max_length=200,null=True)
+    Example_Under_Graduation_college = models.CharField(max_length=400,null=True)
+    Example_Post_Graduation_Degree = models.CharField(max_length=200,null=True)
+    Example_Post_Graduation_college = models.CharField(max_length=400,null=True)
+    Example_Rasi = models.CharField(max_length=200,null=True)
+    Example_Nakshatra = models.CharField(max_length=200,null=True)
+    Example_Creator  =  models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
