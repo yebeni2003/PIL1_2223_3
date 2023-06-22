@@ -20,5 +20,7 @@ from django.contrib import admin
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('Students.urls'))
+    path('',include('Students.urls')),
+    path('',include('Administration.urls')),
+    path('',include('Teachers.urls'))
 ]

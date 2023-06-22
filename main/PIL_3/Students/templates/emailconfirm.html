@@ -1,0 +1,5 @@
+{% autoescape off %}
+Bienvenue sur TimeTableForSchool
+Bonjour {{name}}
+Confirmer votre adresse email en cliquant sur le lien: https//{{domain}}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}
