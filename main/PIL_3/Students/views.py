@@ -38,7 +38,7 @@ def register(request):
            return redirect('register')
        
        if password !=password1:
-           messages.error(request,'Les deux mots de passe ne correspo')
+           messages.error(request,'Les deux mots de passe ne correspondent pas')
            return redirect('register')
            
        mon_utilisateur=User.objects.create_user(username,email,password)
