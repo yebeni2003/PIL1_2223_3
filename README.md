@@ -6,6 +6,7 @@ Ce projet consiste à créer une application Web qui va permettre aux coordonnat
 - Gestion des enseignements et de la masse horaire [fait par les Coordonnateurs de formation]
 - Planification des emplois de temps [fait par les Coordonnateurs de formation]
 - Consultation des emplois du temps publiés [par les étudiants]
+- Envoie de notifications  en temps réel
 
 
 <!-- Installation -->
@@ -30,6 +31,7 @@ git clone git@github.com:yebeni2003/PIL1_2223_3.git
 ```
 
 5. Accédez au répertoire du projet nouvellement cloné :
+
 ```bash
 cd PIL1_2223_3
 ```
@@ -43,8 +45,13 @@ ou
 ```bash
 py -m pip install Django==4.2.2
 ```
+8. Installer  channels:
+
+```py -m install channels```
+
 
 7. Demarrer le serveur d'application django:
+
 ```bash
 py manage.py runserver
 ```
