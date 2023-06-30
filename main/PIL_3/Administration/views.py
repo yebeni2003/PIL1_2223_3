@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,login
-
+from .form import UserForm
 
 
 # Create your views here.
@@ -21,8 +21,18 @@ def home(request):
         else:
             error= 'password ou username incorrect'
             
-        return render(request,'login.html',{'error':error})
+        return render(request,'loginall.html',{'error':error})
     
+def register(request):
+    form=UserForm()
+    if request.method=='POST':
+        form=UserForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    return render(request,'registerall.html',{'form':form})
+
+
     
 def administration(request):
     return render(request,'administration.html')

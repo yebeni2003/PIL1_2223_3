@@ -3,7 +3,7 @@ from django.utils.encoding import force_bytes,force_text
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site 
 from .token import generatorToken
-
+from Administration.models import User
 from PIL_3 import settings
 
 from django.shortcuts import render,redirect
@@ -38,10 +38,10 @@ def register(request):
            return redirect('register')
        
        if password !=password1:
-           messages.error(request,'Les deux mots de passe ne correspo')
+           messages.error(request,'Les deux mots de passe ne correspondent pas')
            return redirect('register')
            
-       mon_utilisateur=User.objects.create_user(username,email,password)
+       mon_utilisateur=User.objects.create_user(username,email,password,is_student=True)
        mon_utilisateur.first_name=firstname
        mon_utilisateur.last_name=lastname
        mon_utilisateur.is_active = False
@@ -117,6 +117,7 @@ def activate(request,uidb64,token):
         messages.error(request,'Activation échouée.Réessayez ')
         return redirect('home')
     
-    
+
 def student(request):
     return render(request,'students.html')
+    
