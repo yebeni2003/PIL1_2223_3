@@ -7,7 +7,6 @@ from Administration.models import User
 from PIL_3 import settings
 
 from django.shortcuts import render,redirect
-from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login as auth_login,logout as auth_logout
 from django.core.mail import send_mail,EmailMessage
@@ -78,21 +77,29 @@ def register(request):
     return render(request,'register.html')
 
 def login(request):
-    if request.method=="POST":
-       username=request.POST['username']
-       password=request.POST['password']
-       user=authenticate(username=username,password=password)
-       my_user= User.objects.get(username=username)
-       if user is not None:
-           auth_login(request,user)
-           firstname=user.first_name
-           return render(request,'index.html',{"firstname":firstname})
-       elif my_user.is_active==False:
-           messages.error(request,"Vous n'avez pas confirmé votre email.Faites-le avant de vous connecter")
-       else:
-           messages.error(request,'Mauvaise Authentification ')
-           return redirect('login')
-    return render(request,'login.html')
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        user = authenticate(username=username, password=password)
+        
+        if user is not None:
+            auth_login(request, user)
+            firstname = user.first_name
+            return render(request, 'index.html', {"firstname": firstname})
+        elif user is None:
+            messages.error(request, 'Mauvaise Authentification')
+        else:
+            try:
+                my_user = User.objects.get(username=username)
+                if not my_user.is_active:
+                    messages.error(request, "Vous n'avez pas confirmé votre email. Faites-le avant de vous connecter")
+            except User.DoesNotExist:
+                messages.error(request, 'Mauvaise Authentification')
+            
+            return redirect('login')
+    
+    return render(request, 'login.html')
 
 
 def logout(request):
