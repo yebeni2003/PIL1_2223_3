@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport sur la base données</title>
+</head>
+<body>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+        }
+    
+        h2 {
+          color: #337ab7;
+        }
+    
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+    
+        th, td {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+    
+        th {
+          background-color: #f2f2f2;
+        }
+    
+        tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+      </style>
+    </head>
+    <body>
+        <h2> Rapport sur la base de données</h2>
+      <table>
+        <tr>
+          <th>Nom de la table</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>Etudiants</td>
+          <td>Table pour stocker les informations des étudiants</td>
+        </tr>
+        <tr>
+          <td>Professeurs</td>
+          <td>Table pour stocker les informations des Professeurs</td>
+        </tr>
+        <tr>
+          <td>Administrations</td>
+          <td>Table pour stocker les informations sur des administrations</td>
+        </tr>
+        <tr>
+            <td>Filières</td>
+            <td>Table pour stocker les informations sur des administrations</td>
+          </tr>
+          <tr>
+            <td>Salles</td>
+            <td>Table pour stocker les informations sur les salles disponibles</td>
+          </tr>
+          <tr>
+            <td>UE</td>
+            <td>Table pour stocker les informations sur les UE</td>
+          </tr>
+          <tr>
+            <td>Matières</td>
+            <td>Table pour stocker les informations sur les matières des UE</td>
+          </tr>
+      </table>
+    
+      <h2>Fonctionnalités implémentées</h2>
+      <ul>
+        <li>Ajout d'un nouvel étudiant avec ses informations de base (matricule_Etu, nom_Etu, prenom_Etu, sexe_Etu, 
+          date_nais_Etu, age_Etu, Contact, email_Etu);</li>
+        <li>Ajout d'un nouveau Professeurs avec ses informations (id_Prof, nom_Prof, prenom_Prof, sexe_Prof,
+         contact_Prof, email_Prof );</li>
+         <li>Ajout d'un nouveau Administrations avec ses informations (id_Amin, nom_Admin, prenom_Admin, sexe_Admin,
+            email_Admin);</li>
+            <li>Ajout d'un nouveau Filières avec ses informations (id_Fil, nom_Fil);</li>
+            <li>Ajout d'un nouveau Salles avec ses informations (id_Sal, nom_Sal, cap-Sal);</li>
+            <li>Ajout d'un nouveau UE avec ses informations (Code_UE, nom_UE, nombre_credit_UE, type_semestre_UE);</li>
+            <li>Ajout d'un nouveau Matières avec ses informations (id_Mat, nom_Mat, Horaire_Mat).</li>
+      </ul>
+      <h2>Améliorations possibles</h2>
+      <ul>
+        <li>Intégrer un système de connexion pour sécuriser l'accès à la base de données</li>
+        <li>Permettre la modification et la suppression des enregistrements existants</li>
+        <li>Ajouter des fonctionnalités de recherche et de filtrage pour faciliter la navigation dans l'emploi du temps</li>
+        <li>Générer des rapports statistiques sur la répartition des Matières et des étudiants</li>
+      </ul>
+    
+</body>
+</html>
