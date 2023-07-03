@@ -124,7 +124,6 @@ def activate(request,uidb64,token):
         messages.error(request,'Activation échouée.Réessayez ')
         return redirect('home')
     
-
 def student(request):
     return render(request,'students.html')
     
