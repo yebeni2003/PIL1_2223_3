@@ -62,7 +62,8 @@ SELECT * FROM Etudiants;
 CREATE TABLE Salle (
     id_sal INT(8),
     Nom_sal VARCHAR(50),
-    Capacite INT(4) NOT NULL
+    Capacite INT(4) NOT NULL,
+    INDEX(id_sal)
 );
 
 /* Insertion de quelques enregistrements */
@@ -128,7 +129,8 @@ CREATE TABLE Professeurs (
     Sexe VARCHAR(1),
     Email_prof VARCHAR(50) NOT NULL,
     id_mat INT,
-    FOREIGN KEY (id_mat) REFERENCES Matiere(id_mat)
+    FOREIGN KEY (id_mat) REFERENCES Matiere(id_mat),
+    INDEX(id_prof)
 );
 
 /* Insertion de quelques enregistrements */
@@ -139,4 +141,52 @@ VALUES (2454, "SAMOU", "Jack", "M", "jeansamou@gmail.com", 5784),
 
 /* Affichage des enregistrements insérés */
 SELECT * FROM Professeurs;
+
+
+
+/* Création de la table EmploiDuTemps */
+CREATE TABLE EmploiDuTemps (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    semaine_debut DATE,
+    semaine_fin DATE,
+    jour_semaine VARCHAR(20),
+    heure_debut TIME,
+    heure_fin TIME,
+    id_prof INT,
+    id_mat INT,
+    id_sal INT,
+    FOREIGN KEY (id_prof) REFERENCES Professeurs(id_prof),
+    FOREIGN KEY (id_mat) REFERENCES Matiere(id_mat),
+    FOREIGN KEY (id_sal) REFERENCES Salle(id_sal)
+);
+
+/* Insertion de quelques enregistrements */
+INSERT INTO EmploiDuTemps (semaine_debut, semaine_fin, jour_semaine, heure_debut, heure_fin, id_prof, id_mat, id_sal)
+VALUES
+    -- Lundi
+    ('2023-05-15', '2023-05-21', 'Lundi', '09:00:00', '11:00:00', 2454, 5784, 355),
+    ('2023-05-15', '2023-05-21', 'Lundi', '11:30:00', '13:30:00', 3553, 665, 688),
+    -- Mardi
+    ('2023-05-15', '2023-05-21', 'Mardi', '09:00:00', '11:00:00', 2232, 5432, 98),
+    ('2023-05-15', '2023-05-21', 'Mardi', '11:30:00', '13:30:00', 3553, 665, 98),
+    -- Mercredi
+    ('2023-05-15', '2023-05-21', 'Mercredi', '09:00:00', '11:00:00', 2454, 5784, 355),
+    ('2023-05-15', '2023-05-21', 'Mercredi', '11:30:00', '13:30:00', 2232, 5432, 665),
+    -- Jeudi
+    ('2023-05-15', '2023-05-21', 'Jeudi', '09:00:00', '11:00:00', 2454, 5784, 665),
+    ('2023-05-15', '2023-05-21', 'Jeudi', '11:30:00', '13:30:00', 2232, 5432, 688),
+    -- Vendredi
+    ('2023-05-15', '2023-05-21', 'Vendredi', '09:00:00', '11:00:00',3553,  665, 98),
+    ('2023-05-15', '2023-05-21', 'Vendredi', '11:30:00', '13:30:00', 2232, 5432, 98),
+    -- Samedi
+    ('2023-05-15', '2023-05-21', 'Samedi', '09:00:00', '11:00:00', 3553, 665, 355),
+    ('2023-05-15', '2023-05-21', 'Samedi', '11:30:00', '13:30:00', 2454, 5784, 355);
+
+
+
+SELECT e.id, e.semaine_debut, e.semaine_fin, e.jour_semaine, e.heure_debut, e.heure_fin, p.Nom_prof, p.Prenoms_prof, m.Nom_mat, s.Nom_sal
+FROM EmploiDuTemps e
+JOIN Professeurs p ON e.id_prof = p.id_prof
+JOIN Matiere m ON e.id_mat = m.id_mat
+JOIN Salle s ON e.id_sal = s.id_sal;
 
