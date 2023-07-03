@@ -11,6 +11,17 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from .info import *
+import django
+from django.utils.encoding import force_str
+django.utils.encoding.force_text=force_str
+
+
+EMAIL_USE_TLS = EMAIL_USE_TLS
+EMAIL_HOST = EMAIL_HOST
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_PORT = EMAIL_PORT
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -58,7 +69,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR,''),
+           
                 os.path.join(BASE_DIR,'Teachers/templates'),
                 os.path.join(BASE_DIR,'Administration/templates'),
                 os.path.join(BASE_DIR,'Students/templates'),
@@ -126,7 +137,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+AUTH_USER_MODEL= 'Administration.User'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
