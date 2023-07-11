@@ -1,0 +1,796 @@
+{% extends 'base/base.html' %}
+
+{% block 'main' %}
+{% load static %}
+    <div>
+        
+
+    <div class="container">
+        <div class="timetable-img text-center">
+            <img src="img/content/timetable.png" alt="">
+        </div>
+        <div class="my-3">
+            <div class="d-flex justify-content-between">
+                <div class="d-flex">
+                    <select name="" id="switchWeek" class="form-select">
+                        <option value="{{ current_week }}" selected disabled>Filter per week</option>
+                        {% for w in all_week %}
+                        <option value="{{ w }}" {% if current_week == w %} selected {% endif %}>
+                            Semaine du {{ w }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    {% if user.is_superuser %}
+                    <select name="" id="switchLevel" class="form-select ms-3">
+                        <option selected disabled>Filter par Filière</option>
+                        {% for w in filieres %}
+                        <option value="{{ w.id }}" {% if filiere.id == w.id %} selected {% endif %}>
+                            {{ w.nom_fil }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    {% endif %}
+                </div>
+                {% if user.is_superuser or user.is_admin %}
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSchedule">Ajouter</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#publishModal" style="margin-left: 5px">
+                        Publier
+                      </button>
+                      
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div>
+            {% if errors %}
+            <div class="my-3 alert alert-danger py-3 text-center">
+                <p class="my-0">{{ errors }}</p>
+            </div>
+            {% endif %}
+            {% if success %}
+            <div class="my-3 alert alert-success py-3 text-center">
+                <p class="my-0">{{ success }}</p>
+            </div>
+            {% endif %}
+            <div class="table-responsive">
+                <table class="table table-bordered shadow">
+                    <thead>
+                        <tr>
+                            <th>Jours</th>
+                            <th>7h-10h</th>
+                            <th>10h-13h</th>
+                            <th>13h-16h</th>
+                            <th>16h-19h</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for day_data in timetable_data %}
+                        <tr>
+                            <td>{{ day_data.day_name }}</td>
+                            <td>
+                                {% for slot in day_data.time_slots.1 %}
+                                <div class="badge" style="background-color: {{ slot.subject.bgColor }}"
+                                    data-bs-target="#viewSchedule1_{{ slot.id }}" data-bs-toggle="modal">
+                                    {{ slot.subject.nom_mat }} 
+                                </div>
+                                <br>
+                                {{slot.subject.masse_horraire_utilisee}}h/{{slot.subject.horaire_mat}}h
+                                <div class="modal fade" id="viewSchedule1_{{ slot.id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                    {{ slot.subject.nom_mat }} of {{ day_data.day_name }}
+                                                </h5>
+                                                <div class="d-flex justify-content-end">
+                                                    {% if user.is_superuser %}
+                                                    <a href="{% url 'destroy_schedule' slot.id %}?next={% url 'student_schedule' %}"
+                                                        class="btn btn-danger me-3">Supprimer</a>
+                                                    {% endif %}
+                                                    <button type="button" class="btn-close align-self-center"
+                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Détails</th>
+                                                              </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    Matière
+                                                                </td>
+                                                                <td>{{ slot.subject.nom_mat }}</td>
+                                                                >
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Début
+                                                                </td>
+                                                                <td>{{ slot.start_time }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Fin
+                                                                </td>
+                                                                <td>{{ slot.end_time }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Professeur
+                                                                </td>
+                                                                <td>
+                                                                    <p>Nom: {{ slot.teacher.nom_prof }}
+                                                                        {{ slot.teacher.prenom_prof }}</p>
+                                                                    <p>Email: {{ slot.teacher.email_prof }}</p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Salle de cours
+                                                                </td>
+                                                                <td>
+                                                                    <p>Nom: {{ slot.classroom.nom_sal }}</p>
+                                                                    <p>Description: {{ slot.classroom.desc }}</p>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Fermer</button>
+                                                </div>
+                                             <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#updateModal1_{{ slot.id }}">Modifier l'emploi du temps</button>
+                                        
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                  <div class="modal fade" id="updateModal1_{{ slot.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Modifier l'emploi du temps</h5>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button type="button" class="btn-close align-self-center" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Formulaire de modification de l'emploi du temps -->
+                                                        <form action="{% url 'update_schedule' slot.id %}" method="post">
+                                                            {% csrf_token %}
+                                                            <div class="mb-3">
+                                                                <label for="matiere">Matière</label>
+                                                                <select class="form-select" id="matiere" name="matiere" required>
+                                                                    {% for matiere in matieres %}
+                                                                    <option value="{{ matiere.id_mat }}" {% if slot.subject.id_mat == matiere.id_mat %}selected{% endif %}>
+                                                                        {{ matiere.nom_mat }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="teacher">Professeur</label>
+                                                                <select class="form-select" id="teacher" name="teacher" required>
+                                                                    {% for teacher in teachers %}
+                                                                    <option value="{{ teacher.id_prof }}" {% if slot.teacher.id_prof == teacher.id_prof %}selected{% endif %}>
+                                                                        {{ teacher.nom_prof }} {{ teacher.prenom_prof }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="salle">Salle de cours</label>
+                                                                <select class="form-select" id="salle" name="salle" required>
+                                                                    {% for salle in salles %}
+                                                                    <option value="{{ salle.id_sal}}" {% if slot.classroom.id_sal == salle.id_sal %}selected{% endif %}>
+                                                                        {{ salle.nom_sal }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="start_time">Début</label>
+                                                                <input type="datetime-local" class="form-control" id="start_time" name="start_time"
+                                                                       value="{{ slot.start_time }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="end_time">Fin</label>
+                                                                <input type="datetime-local" class="form-control" id="end_time" name="end_time"
+                                                                       value="{{ slot.end_time }}" required>
+                                                            </div>
+                                                            <input type="hidden" name="schedule_id" value="{{ slot.id }}">
+                                                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                            
+                                {% endfor %}
+                                
+                            </td>
+                            <td>
+                                {% for slot in day_data.time_slots.2 %}
+                                <div class="badge" style="background-color: {{ slot.subject.bgColor }}"
+                                    data-bs-target="#viewSchedule2_{{ slot.id }}" data-bs-toggle="modal">
+                                    {{ slot.subject.nom_mat }}
+                                </div>
+                                <br>
+                                {{slot.subject.masse_horraire_utilisee}}h/{{slot.subject.horaire_mat}}h
+                                <div class="modal fade" id="viewSchedule2_{{ slot.id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                    {{ slot.subject.nom_mat }} du {{ day_data.day_name }}
+                                                </h5>
+                                                <div class="d-flex justify-content-end">
+                                                    {% if user.is_superuser %}
+                                                    <a href="{% url 'destroy_schedule' slot.id %}?next={% url 'student_schedule' %}"
+                                                        class="btn btn-danger me-3">Supprimer</a>
+                                                    {% endif %}
+                                                    <button type="button" class="btn-close align-self-center"
+                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Détails</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    Matière
+                                                                </td>
+                                                                <td>{{ slot.subject.nom_mat }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Début
+                                                                </td>
+                                                                <td>{{ slot.start_time }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Fin
+                                                                </td>
+                                                                <td>{{ slot.end_time}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Professeur
+                                                                </td>
+                                                                <td>
+                                                                    <p>Nom: {{ slot.teacher.nom_prof }}
+                                                                        {{ slot.teacher.prenom_prof }}</p>
+                                                                    <p>Email: {{ slot.teacher.email_prof }}</p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Salle de cours
+                                                                </td>
+                                                                <td>
+                                                                    <p>Nom: {{ slot.classroom.nom_sal }}</p>
+                                                                    <p>Description: {{ slot.classroom.desc }}</p>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Fermer</button>
+                                                    {% if user.is_admin or user.is_superuser %}
+                                                   <button type="button" class="btn btn-primary btn-modifier" data-bs-toggle="modal" data-bs-target="#updateModal2_{{slot.id}}">Modifier l'emploi du temps</button>
+                                                    {% endif %}
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="updateModal2_{{ slot.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Modifier l'emploi du temps</h5>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button type="button" class="btn-close align-self-center" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Formulaire de modification de l'emploi du temps -->
+                                                        <form action="{% url 'update_schedule' slot.id %}" method="post">
+                                                            {% csrf_token %}
+                                                            <div class="mb-3">
+                                                                <label for="matiere">Matière</label>
+                                                                <select class="form-select" id="matiere" name="matiere" required>
+                                                                    {% for matiere in matieres %}
+                                                                    <option value="{{ matiere.id_mat }}" {% if slot.subject.id_mat == matiere.id_mat %}selected{% endif %}>
+                                                                        {{ matiere.nom_mat }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="teacher">Professeur</label>
+                                                                <select class="form-select" id="teacher" name="teacher" required>
+                                                                    {% for teacher in teachers %}
+                                                                    <option value="{{ teacher.id_prof }}" {% if slot.teacher.id_prof == teacher.id_prof %}selected{% endif %}>
+                                                                        {{ teacher.nom_prof }} {{ teacher.prenom_prof }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="salle">Salle de cours</label>
+                                                                <select class="form-select" id="salle" name="salle" required>
+                                                                    {% for salle in salles %}
+                                                                    <option value="{{ salle.id_sal}}" {% if slot.classroom.id_sal == salle.id_sal %}selected{% endif %}>
+                                                                        {{ salle.nom_sal }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="start_time">Début</label>
+                                                                <input type="datetime-local" class="form-control" id="start_time" name="start_time"
+                                                                       value="{{ slot.start_time }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="end_time">Fin</label>
+                                                                <input type="datetime-local" class="form-control" id="end_time" name="end_time"
+                                                                       value="{{ slot.end_time }}" required>
+                                                            </div>
+                                                            <input type="hidden" name="schedule_id" value="{{ slot.id }}">
+                                                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                             </div>
+                                            
+                                {% endfor %}
+                                                           </td>
+                            <td>
+                                {% for slot in day_data.time_slots.3 %}
+                                <div class="badge" style="background-color: {{ slot.subject.bgColor }}"
+                                    data-bs-target="#viewSchedule3_{{ slot.id }}" data-bs-toggle="modal">
+                                    {{ slot.subject.nom_mat }}
+                                </div>
+                                <br>
+                                {{slot.subject.masse_horraire_utilisee}}h/{{slot.subject.horaire_mat}}h
+                                <div class="modal fade" id="viewSchedule3_{{ slot.id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                    {{ slot.subject.nom_mat }} du {{ day_data.day_name }}
+                                                </h5>
+                                                <div class="d-flex justify-content-end">
+                                                    {% if user.is_superuser %}
+                                                    <a href="{% url 'destroy_schedule' slot.id %}?next={% url 'schedule' filiere.id_fil %}"
+                                                        class="btn btn-danger me-3">Supprimer</a>
+                                                    {% endif %}
+                                                    <button type="button" class="btn-close align-self-center"
+                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Détails</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    Matière
+                                                                </td>
+                                                                <td> {{ slot.subject.nom_mat }} </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Début
+                                                                </td>
+                                                                <td> {{ slot.start_time }} </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Fin
+                                                                </td>
+                                                                <td> {{ slot.end_time }} </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Professeur
+                                                                </td>
+                                                                <td>
+                                                                    <p> Nom: {{ slot.teacher.nom_prof }}
+                                                                        {{ slot.teacher.prenom_prof }} </p>
+                                                                    <p> Email: {{ slot.teacher.email }} </p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Salle de cours
+                                                                </td>
+                                                                <td>
+                                                                    <p> Nom: {{ slot.classroom.nom_sal }}</p>
+                                                                    <p> Description: {{ slot.classroom.desc }}</p>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Fermer</button>
+                                                <button type="button" class="btn btn-primary btn-modifier" data-bs-toggle="modal" data-bs-target="#updateModal3_{{slot.id}}" >Modifier l'emploi du temps</button>
+
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="updateModal_{{ slot.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Modifier l'emploi du temps</h5>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button type="button" class="btn-close align-self-center" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Formulaire de modification de l'emploi du temps -->
+                                                        <form action="{% url 'update_schedule' slot.id %}" method="post">
+                                                            {% csrf_token %}
+                                                            <div class="mb-3">
+                                                                <label for="matiere">Matière</label>
+                                                                <select class="form-select" id="matiere" name="matiere" required>
+                                                                    {% for matiere in matieres %}
+                                                                    <option value="{{ matiere.id_mat }}" {% if slot.subject.id_mat == matiere.id_mat %}selected{% endif %}>
+                                                                        {{ matiere.nom_mat }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="teacher">Professeur</label>
+                                                                <select class="form-select" id="teacher" name="teacher" required>
+                                                                    {% for teacher in teachers %}
+                                                                    <option value="{{ teacher.id_prof }}" {% if slot.teacher.id_prof == teacher.id_prof %}selected{% endif %}>
+                                                                        {{ teacher.nom_prof }} {{ teacher.prenom_prof }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="salle">Salle de cours</label>
+                                                                <select class="form-select" id="salle" name="salle" required>
+                                                                    {% for salle in salles %}
+                                                                    <option value="{{ salle.id_sal}}" {% if slot.classroom.id_sal == salle.id_sal %}selected{% endif %}>
+                                                                        {{ salle.nom_sal }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="start_time">Début</label>
+                                                                <input type="datetime-local" class="form-control" id="start_time" name="start_time"
+                                                                       value="{{ slot.start_time }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="end_time">Fin</label>
+                                                                <input type="datetime-local" class="form-control" id="end_time" name="end_time"
+                                                                       value="{{ slot.end_time }}" required>
+                                                            </div>
+                                                            <input type="hidden" name="schedule_id" value="{{ slot.id }}">
+                                                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                             </div>
+                                            
+                                {% endfor %}
+                                <!-- Modal de modification -->
+
+           
+                            </td>
+                            <td>
+                                {% for slot in day_data.time_slots.4 %}
+                                <div class="badge" style="background-color:{{ slot.subject.bgColor }}"
+                                    data-bs-target="#viewSchedule4_{{ slot.id }}" data-bs-toggle="modal">
+                                    {{ slot.subject.nom_mat }}
+                                </div>
+                                <br>
+                                {{slot.subject.masse_horraire_utilisee}}h/{{slot.subject.horaire_mat}}h
+                                <div class="modal fade" id="viewSchedule4_{{ slot.id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">
+                                                    {{ slot.subject.nom_mat }} du {{ day_data.day_name }}
+                                                </h5>
+                                                <div class="d-flex justify-content-end">
+                                                    {% if user.is_superuser or user.is_admin %}
+                                                    <a href="{% url 'destroy_schedule' slot.id %}?next={% url 'schedule' filiere.id_fil %}"
+                                                        class="btn btn-danger me-3">Supprimer</a>
+                                                    {% endif %}
+                                                    <button type="button" class="btn-close align-self-center"
+                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>Détails</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    Matière
+                                                                </td>
+                                                                <td> {{ slot.subject.nom_mat }} </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Début
+                                                                </td>
+                                                                <td> {{ slot.start_time }} </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Fin
+                                                                </td>
+                                                                <td> {{ slot.end_time }} </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Professeur
+                                                                </td>
+                                                                <td>
+                                                                    <p> Nom: {{ slot.teacher.nom_prof }}
+                                                                        {{ slot.teacher.prenom_prof }} </p>
+                                                                    <p> Email: {{ slot.teacher.email_prof }} </p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    Salle de cours
+                                                                </td>
+                                                                <td>
+                                                                    <p> Nom: {{ slot.classroom.nom_sal }}</p>
+                                                                    <p> Description: {{ slot.classroom.desc }}</p>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Fermer</button>
+                                        <button type="button" class="btn btn-primary btn-modifier" data-bs-toggle="modal" data-bs-target="#updateModal4_{{slot.id}}" data-emploi-id="{{ slot.id }}">Modifier l'emploi du temps</button>
+
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="updateModal4_{{ slot.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Modifier l'emploi du temps</h5>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button type="button" class="btn-close align-self-center" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Formulaire de modification de l'emploi du temps -->
+                                                        <form action="{% url 'update_schedule' slot.id %}" method="post">
+                                                            {% csrf_token %}
+                                                            <div class="mb-3">
+                                                                <label for="matiere">Matière</label>
+                                                                <select class="form-select" id="matiere" name="matiere" required>
+                                                                    {% for matiere in matieres %}
+                                                                    <option value="{{ matiere.id_mat }}" {% if slot.subject.id_mat == matiere.id_mat %}selected{% endif %}>
+                                                                        {{ matiere.nom_mat }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="teacher">Professeur</label>
+                                                                <select class="form-select" id="teacher" name="teacher" required>
+                                                                    {% for teacher in teachers %}
+                                                                    <option value="{{ teacher.id_prof }}" {% if slot.teacher.id_prof == teacher.id_prof %}selected{% endif %}>
+                                                                        {{ teacher.nom_prof }} {{ teacher.prenom_prof }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="salle">Salle de cours</label>
+                                                                <select class="form-select" id="salle" name="salle" required>
+                                                                    {% for salle in salles %}
+                                                                    <option value="{{ salle.id_sal}}" {% if slot.classroom.id_sal == salle.id_sal %}selected{% endif %}>
+                                                                        {{ salle.nom_sal }}
+                                                                    </option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="start_time">Début</label>
+                                                                <input type="datetime-local" class="form-control" id="start_time" name="start_time"
+                                                                       value="{{ slot.start_time }}" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="end_time">Fin</label>
+                                                                <input type="datetime-local" class="form-control" id="end_time" name="end_time"
+                                                                       value="{{ slot.end_time }}" required>
+                                                            </div>
+                                                            <input type="hidden" name="schedule_id" value="{{ slot.id }}">
+                                                            <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                             </div>
+                                            
+                                {% endfor %}
+                                
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+                          
+
+    
+    <div class="modal fade" id="publishModal" tabindex="-1" aria-labelledby="publishModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="publishModalLabel">Confirmation de publication</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Voulez-vous publier les emplois du temps de la semaine {{ current_week }} ?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Non</button>
+              <a href="{% url 'publish_schedule'  current_week  %}" class="btn btn-primary">Oui</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  
+    
+<div class="mob   dal fade" id="addSchedule" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="level_id" value="{{ level.id }}">
+            <input type="hidden" name="weekNum" id="weekId">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Emploi du temps de la {{ level.nom_fil }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="my-3 text-start">
+                        <label for="teacher_id" class="form-label">Professeur:</label>
+                        <select name="teacher" id="teacher_id" class="form-select form-control" required>
+                            <option value="default" disabled selected>Sélectionner le nom du professeur</option>
+                            {% for t in teachers %}
+                            <option value="{{ t.id_prof }}"> {{ t.nom_prof }} {{ t.prenom_prof }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="my-3 text-start">
+                        <label for="subject_id" class="form-label">Matière:</label>
+                        <select name="matiere" id="subject_id" class="form-select form-control" required>
+                            <option value="default" disabled selected>Sélectionner une matière</option>
+                            {% for t in matieres %}
+                            <option value="{{ t.id_mat }}"> {{ t.nom_mat }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="my-3 text-start">
+                        <label for="classroom_id" class="form-label">Salle de cours:</label>
+                        <select name="salle" id="classroom_id" class="form-select form-control" required>
+                            <option value="default" disabled selected>Sélectionner une salle de cours</option>
+                            {% for t in salles %}
+                            <option value="{{ t.id_sal }}"> {{ t.nom_sal }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="my-3 text-start">
+                        <label for="start_time_id" class="form-label">Date et heure de début:</label>
+                        <input id="start_time_id" type="datetime-local" name="start_time" class="form-control">
+                    </div>
+                    <div class="my-3 text-start">
+                        <label for="end_time_id" class="form-label">Date et heure de fin:</label>
+                        <input type="datetime-local" name="end_time" id="end_time_id" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+    
+    <script>
+        $(document).ready(function () {
+            "use strict"
+    
+            const baseUrl = "{% url 'student_schedule' %}";
+    
+           c
+            $('#switchLevel').on('change', function () {
+                const url = baseUrl + '/' + this.value;
+                location.replace(url);
+            })
+            
+        })
+    </script>
+</div>
+{% endblock %}

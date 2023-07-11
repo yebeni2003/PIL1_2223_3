@@ -22,7 +22,7 @@
 						<div class="card-body">
 							<h4 class="card-title">Login</h4>
 							{% for message in messages  %}
-								<span class="message"><strong>{{message}}</strong></span>
+								<span class="message" style="color:green"><strong>{{message}}</strong></span>
 							{% endfor %}
 							<form method="POST" class="my-login-validation" action="/login" novalidate="">
 								{% csrf_token %}
@@ -61,6 +61,7 @@
 								</div>
 								<div class="mt-4 text-center">
 									Don't have an account? <a href="{% url 'register' %}">Create One</a>
+									Etes-vous de l'Administration? <a href="{% url 'login_admin' %}">Connectez-vous</a>
 								</div>
 							</form>
 						</div>

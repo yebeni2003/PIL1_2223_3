@@ -1,0 +1,96 @@
+{% extends 'base/base.html' %}
+
+{% block 'main' %}
+{% load highlight_filter %}
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+
+          <form action="{% url 'emploi_search' %}" method="GET">
+            {% csrf_token %}
+          <input type="text" class="form-control" id="searchQuery" name="search_query" placeholder="Rechercher..." value="{{ search_query }}" style="margin:10px">
+          <button type="submit" class="btn btn-primary">Rechercher</button>
+        </form>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <select class="form-select" id="switchWeek" name="week_num">
+          <option value="{{week_num}}" select disabled >Toutes les semaines</option>
+          {% for week  in all_week  %}
+          <option value="{{week}}" {% if week == week_num %} selected {% endif %}  >Semaine {{week}}</option>
+          {% endfor %}
+          <!-- Ajoutez d'autres options de semaine ici -->
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select class="form-select" id="switchFiliere" name="filiere_id">
+          <option value="{{filiere_id}}"  selected disabled>Toutes les filières</option>
+          {% for filiere in filieres %}
+            <option value="{{ filiere.id_fil }}" {% if filiere.id_fil == filiere_id %} selected {% endif %}>{{ filiere.nom_fil }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Matière</th>
+              <th>Salle</th>
+              <th>Professeur</th>
+              <th>Filière</th>
+              <th>Numéro de semaine</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for emploi in emplois %}
+              <tr>
+                <td>{{ emploi.subject.nom_mat|highlight:search_query }}</td>
+                <td>{{ emploi.classroom.nom_sal|highlight:search_query }}</td>
+                <td>{{ emploi.teacher.nom_prof|highlight:search_query }}</td>
+                <td>{{ emploi.filiere.nom_fil|highlight:search_query }}</td>
+                <td>{{ emploi.week_num }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="5" class="text-center">Aucun résultat trouvé.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      const baseUrl = "{% url 'emploi_search' %}";
+
+      // Trigger form submission when "Rechercher" button is clicked
+      $('form').on('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
+        submitForm();
+      });
+
+      $('#switchWeek').on('change', function () {
+        submitForm();
+      });
+
+      $('#switchFiliere').on('change', function () {
+        submitForm();
+      });
+
+      function submitForm() {
+        const searchQuery = $('#searchQuery').val();
+        const weekNum = $('#switchWeek').val();
+        const filiereId = $('#switchFiliere').val();
+        const url = `${baseUrl}?search_query=${encodeURIComponent(searchQuery)}&week_num=${weekNum}&filiere_id=${filiereId}`;
+        location.replace(url);
+      }
+    });
+  </script>
+{% endblock %}

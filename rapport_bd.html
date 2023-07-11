@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rapport - Conception d'emploi du temps</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+       
+        
+        p {
+            margin-bottom: 10px;
+        }
+        
+       
+        h2 {
+          color: #337ab7;
+        }
+    
+        table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+    
+        th, td {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+    
+        th {
+          background-color: #f2f2f2;
+        }
+    
+        tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rapport - Conception d'emploi du temps</h1>
+    
+    <h2>Introduction</h2>
+    <p>Dans le cadre du projet de conception d'emploi du temps, nous avons développé une base de données pour stocker les informations essentielles relatives aux étudiants, professeurs, administrations, filières, salles, unités d'enseignement (UE) et matières. Ce rapport présente les détails de la base de données et explique la pertinence du script utilisé pour la création des tables et l'insertion des données.</p>
+    
+    <h2>Structure de la base de données</h2>
+    <p>La base de données est composée des tables suivantes :</p>
+    <ul>
+        <li>Etudiants : Stocke les informations sur les étudiants, y compris leur matricule, nom, prénom, sexe, date de naissance, âge, contact et email. Chaque étudiant est associé à une filière.</li>
+        <li>Professeurs : Contient les détails des professeurs tels que leur identifiant, nom, prénom, sexe, contact et email. Chaque professeur est lié à une matière.</li>
+        <li>Administrations : Enregistre les informations relatives aux membres de l'administration, y compris leur identifiant, nom, prénom, sexe et email.</li>
+        <li>Filières : Stocke les informations sur les différentes filières disponibles, avec leur identifiant et leur nom.</li>
+        <li>Salles : Contient les détails des salles utilisées pour les cours, y compris leur identifiant, nom et capacité.</li>
+        <li>UE (Unités d'Enseignement) : Enregistre les unités d'enseignement avec leur code, nom, nombre de crédits et type de semestre.</li>
+        <li>Matières : Stocke les informations sur les matières enseignées, y compris leur identifiant, nom, horaire et l'unité d'enseignement à laquelle elles appartiennent.</li>
+    </ul>
+    
+    <h2>Script SQL</h2>
+    <p>Le script SQL utilisé pour créer les tables et insérer les données dans la base de données est le suivant :</p>
+    <pre><code>```
+[Le script SQL complet ici]
+```</code></pre>
+    
+    <h2>Pertinence du script dans le projet</h2>
+    <p>Le script SQL est pertinent dans le projet de conception d'emploi du temps car il permet de :</p>
+    <ul>
+        <li>Créer les tables nécessaires pour stocker les informations clés liées aux étudiants, professeurs, administrations, filières, salles, UE et matières.</li>
+        <li>Établir des relations entre les tables en utilisant des clés primaires et étrangères, ce qui permet de lier les entités entre elles.</li>
+        <li>Insérer des données initiales dans les tables pour disposer d'un jeu de données de départ.</li>
+    </ul>
+    
+
+
+    <h2>Table "Etudiants"</h2>
+  <p>
+    Cette table contient des informations sur les étudiants inscrits dans le système.
+  </p>
+  <table>
+    <tr>
+      <th>Attribut</th>
+      <th>Type de données</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>matricule_Etu</td>
+      <td>INT(10)</td>
+      <td>Le numéro de matricule de l'étudiant (clé primaire)</td>
+    </tr>
+    <tr>
+      <td>nom_Etu</td>
+      <td>VARCHAR(50)</td>
+      <td>Le nom de l'étudiant</td>
+    </tr>
+    <tr>
+      <td>prenom_Etu</td>
+      <td>VARCHAR(100)</td>
+      <td>Le prénom de l'étudiant</td>
+    </tr>
+    <tr>
+      <td>sexe_Etu</td>
+      <td>VARCHAR(1)</td>
+      <td>Le sexe de l'étudiant</td>
+    </tr>
+    <tr>
+      <td>date_nais_Etu</td>
+      <td>DATE</td>
+      <td>La date de naissance de l'étudiant</td>
+    </tr>
+    <tr>
+      <td>age_Etu</td>
+      <td>INT(3)</td>
+      <td>L'âge de l'étudiant</td>
+    </tr>
+    <tr>
+      <td>Contact</td>
+      <td>INT(8)</td>
+      <td>Le contact téléphonique de l'étudiant</td>
+    </tr>
+    <tr>
+      <td>email_Etu</td>
+      <td>VARCHAR(100)</td>
+      <td>L'adresse email de l'étudiant</td>
+    </tr>
+  </table>
+  
+  <h2>Table "Professeurs"</h2>
+  <p>
+    Cette table contient des informations sur les professeurs du système.
+  </p>
+  <table>
+    <tr>
+      <th>Attribut</th>
+      <th>Type de données</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>id_Prof</td>
+      <td>INT(10)</td>
+      <td>L'identifiant du professeur (clé primaire)</td>
+    </tr>
+    <tr>
+      <td>nom_Prof</td>
+      <td>VARCHAR(50)</td>
+      <td>Le nom du professeur</td>
+    </tr>
+    <tr>
+      <td>prenom_Prof</td>
+      <td>VARCHAR(100)</td>
+      <td>Le prénom du professeur</td>
+    </tr>
+    <tr>
+      <td>sexe_Prof</td>
+      <td>VARCHAR(1)</td>
+      <td>Le sexe du professeur</td>
+    </tr>
+    <tr>
+      <td>contact_Prof</td>
+      <td>INT(8)</td>
+      <td>Le contact téléphonique du professeur</td>
+    </tr>
+    <tr>
+      <td>email_Prof</td>
+      <td>VARCHAR(100)</td>
+      <td>L'adresse email du professeur</td>
+    </tr>
+  </table>
+
+  <h2>Table "Administrations"</h2>
+  <p>
+    Cette table contient des informations sur les membres de l'administration du système.
+  </p>
+  <table>
+    <tr>
+      <th>Attribut</th>
+      <th>Type de données</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>id_Admin</td>
+      <td>INT(10)</td>
+      <td>L'identifiant de l'administrateur (clé primaire)</td>
+    </tr>
+    <tr>
+      <td>nom_Admin</td>
+      <td>VARCHAR(50)</td>
+      <td>Le nom de l'administrateur</td>
+    </tr>
+    <tr>
+      <td>prenom_Admin</td>
+      <td>VARCHAR(100)</td>
+      <td>Le prénom de l'administrateur</td>
+    </tr>
+    <tr>
+      <td>sexe_Admin</td>
+      <td>VARCHAR(1)</td>
+      <td>Le sexe de l'administrateur</td>
+    </tr>
+    <tr>
+      <td>email_Admin</td>
+      <td>VARCHAR(100)</td>
+      <td>L'adresse email de l'administrateur</td>
+    </tr>
+  </table>
+  
+  <h2>Table "Filières"</h2>
+  <p>
+    Cette table contient des informations sur les filières disponibles dans le système.
+  </p>
+  <table>
+    <tr>
+      <th>Attribut</th>
+      <th>Type de données</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>id_Fil</td>
+      <td>INT(10)</td>
+      <td>L'identifiant de la filière (clé primaire)</td>
+    </tr>
+    <tr>
+      <td>nom_Fil</td>
+      <td>VARCHAR(50)</td>
+      <td>Le nom de la filière</td>
+    </tr>
+  </table>
+  
+  <h2>Table "Salles"</h2>
+  <p>
+    
+  </p>
+  <table>
+    <tr>
+      <th>Attribut</th>
+      <th>Type de données</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>id_Sal</td>
+      <td>VARCHAR(20)</td>
+      <td>L'identifiant de la salle (clé primaire)</td>
+    </tr>
+    <tr>
+      <td>nom_Sal</td>
+      <td>VARCHAR(20)</td>
+      <td>Le nom de la salle</td>
+    </tr>
+    <tr>
+      <td>cap_Sal</td>
+      <td>INT(4)</td>
+      <td>La capacité de la salle</td>
+    </tr>
+  </table>
+  
+  <h2>Table "UE"</h2>
+  
+  <table>
+    <tr>
+      <th>Attribut</th>
+      <th>Type de données</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>code_UE</td>
+      <td>VARCHAR(10)</td>
+      <td>Le code de l'unité d'enseignement (clé primaire)</td>
+    </tr>
+    <tr>
+      <td>nom_UE</td>
+      <td>VARCHAR(100)</td>
+      <td>Le nom de l'unité d'enseignement</td>
+    </tr>
+    <tr>
+      <td>nombre_credit_UE</td>
+      <td>INT(1)</td>
+      <td>Le nombre de crédits attribués à l'unité d'enseignement</td>
+    </tr>
+    <tr>
+      <td>type_semestre_UE</td>
+      <td>INT(1)</td>
+      <td>Le type de semestre auquel l'unité d'enseignement appartient</td>
+    </tr>
+  </table>
+  
+  <h2>Table "Matieres"</h2>
+  <p>
+    
+  </p>
+  <table>
+    <tr>
+      <th>Attribut</th>
+      <th>Type de données</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>id_Mat</td>
+      <td>INT(10)</td>
+      <td>L'identifiant de la matière (clé primaire)</td>
+    </tr>
+    <tr>
+      <td>nom_Mat</td>
+      <td>VARCHAR(50)</td>
+      <td>Le nom de la matière</td>
+    </tr>
+    <tr>
+      <td>Horaire_Mat</td>
+      <td>INT(3)</td>
+      <td>L'horaire de la matière</td>
+    </tr>
+  </table>
+
+    <h2>Conclusion</h2>
+    <p>En conclusion, la base de données créée à l'aide du script SQL fournit une structure solide pour la gestion des informations relatives aux étudiants, professeurs, administrations, filières, salles, UE et matières dans le projet de conception d'emploi du temps. Elle permet de stocker et de manipuler ces données de manière efficace et cohérente, facilitant ainsi la création et la gestion de l'emploi du temps des étudiants.</p>
+    
+</body>
+</html>

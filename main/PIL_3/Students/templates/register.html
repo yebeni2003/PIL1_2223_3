@@ -20,9 +20,9 @@
 					<div class="card fat">
 						<div class="card-body">
 							<h4 class="card-title">Register</h4>
-							
+							<h3 style="color: #000;">{{messages}}</h3>
 							<form method="POST" class="my-login-validation"  novalidate="">
-								
+								{% csrf_token %}
 								<div class="form-group">
 									<label for="name">Username</label>
 									<input id="name" type="text" class="form-control" name="username" required autofocus>
@@ -31,7 +31,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="firstname">Votre Matricule</label>
+									<label for="matricule">Votre Matricule</label>
 									<input id="matricule" type="text" class="form-control" name="matricule" required>
 									<div class="invalid-feedback">
 										What's your matricule?
@@ -39,12 +39,20 @@
 								
 								</div>
 								<div class="form-group">
-									<label for="dob">Date de naissance</label>
-									<input id="dob" type="date" class="form-control" name="dob" required>
+									<label for="lastname">Votre Nom</label>
+									<input id="lastname" type="text" class="form-control" name="lastname" required>
 									<div class="invalid-feedback">
-										Please enter your date of birth.
+										What's your lastname?
 									</div>
+								<div class="form-group">
+									<label for="firstname">Vos Prénoms</label>
+									<input id="firstname" type="text" class="form-control" name="firstname" placeholder="Prénoms dans l'ordre" required>
+									<div class="invalid-feedback">
+										What's your fristname?
+									</div>
+								
 								</div>
+								
 								<div class="form-group">
 									<label for="email">Email</label>
 									<input id="email" type="email" class="form-control" name="email" required>

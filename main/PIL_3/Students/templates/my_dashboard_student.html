@@ -1,0 +1,308 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href=" {% static 'images/time.png' %} ">
+    <link rel="stylesheet" href="{% static 'css/my_dashboard.css' %}">
+    <title>TimePlan</title>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+<body>
+  <div class="sidebar">
+    <div class="logo-details">
+      <i class='bx bx-calendar'></i>
+      <span class="logo_name">TimePlan</span>
+    </div>
+      <ul class="nav-links">
+        <li>
+          <a href="#" class="active">
+            <i class='bx bx-grid-alt'></i>
+            <span class="links_name">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-pie-chart-alt-2'></i>
+            <span class="links_name">Analyse</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-book-alt'></i>
+            <span class="links_name">Planning</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-user'></i>
+            <span class="links_name">Notifications</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class='bx bx-cog'></i>
+            <span class="links_name">Parametres</span>
+          </a>
+        </li>
+        <li class="log_out">
+          <a href="#">
+            <i class='bx bx-log-out'></i>
+            <span class="links_name"> <a href="{% url 'logout' %}">Log out</a></span>
+          </a>
+        </li>
+      </ul>
+  </div>
+  <section class="home-section">
+    <nav>
+      <div class="sidebar>">
+        <i class='bx bx-menu sidebarBtn'></i>
+        <span class="dashboard">Dashboard</span>
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="Search...">
+        <i class='bx bx-search'></i>
+      </div>
+      <div class="profile-details">
+        <img src="{% static 'images/Profile.jpg' %}" alt="">
+        <span class="admin_name">{{firstname}}</span>
+        <i class='bx bx-chevron-down'></i>
+      </div>
+    </nav>
+  </section>
+  <div class="container">
+    {% for courses_semaine in grouped_courses %}
+    <div class="row">
+      <h3>Emploi du temps S_{{ courses_semaine.0.semaine }}</h3>
+      <table>
+        <thead>
+          <tr>
+            <td>Lundi</td>
+            <td>Mardi</td>
+            <td>Mercredi</td>
+            <td>Jeudi</td>
+            <td>Vendredi</td>
+            <td>Samedi</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              {% for course in courses_semaine %}
+                {% if course.day == 'Lundi' %}
+                <span class="bg-info">
+                  {{ course.groupe }}
+                </span>
+                <span class="mx-1 text-danger">
+                  {{ course.classroom }}
+                </span>
+                <br>
+                <span>
+                  {{ course.start_time }} - {{ course.end_time }}
+                </span>
+                <span>
+                  {{ course.subject }}
+                </span>
+                <br>
+                <span>
+                  {{ course.masse_horraire }}
+                </span>
+                <br>
+                <span>
+                  {{ course.teacher }}
+                </span>
+                <br>
+                 <a href="{% url 'update' course.id %}" class="btn btn-warning btn-sm"style="width: 100px;">Modifier</a>
+                 <form action="{% url 'delete_course' course.id %}" method="post">
+                  {% csrf_token %}
+                  <input type="submit" value="Supprimer" class="btn btn-danger">
+                </form>
+                {% endif %}
+              {% endfor %}
+            </td>
+            <td>
+              {% for course in courses_semaine %}
+                {% if course.day == 'Mardi' %}
+                <span class="bg-info">
+                  {{ course.groupe }}
+                </span>
+                <span class="mx-1 text-danger">
+                  {{ course.classroom }}
+                </span>
+                <br>
+                <span>
+                  {{ course.start_time }} - {{ course.end_time }}
+                </span>
+                <span>
+                  {{ course.subject }}
+                </span>
+                <br>
+                <span>
+                  {{ course.masse_horraire }}
+                </span>
+                <br>
+                <span>
+                  {{ course.teacher }}
+                </span>
+                <br>
+                 <a href="{% url 'update' course.id %}" class="btn btn-warning btn-sm"style="width: 100px;">Modifier</a>
+                 <form action="{% url 'delete_course' course.id %}" method="post">
+                  {% csrf_token %}
+                  <input type="submit" value="Supprimer" class="btn btn-danger">
+                </form>
+                {% endif %}
+              {% endfor %}
+            </td>
+            <td>
+              {% for course in courses_semaine %}
+                {% if course.day == 'Mercredi' %}
+                <span class="bg-info">
+                  {{ course.groupe }}
+                </span>
+                <span class="mx-1 text-danger">
+                  {{ course.classroom }}
+                </span>
+                <br>
+                <span>
+                  {{ course.start_time }} - {{ course.end_time }}
+                </span>
+                <span>
+                  {{ course.subject }}
+                </span>
+                <br>
+                <span>
+                  {{ course.masse_horraire }}
+                </span>
+                <br>
+                <span>
+                  {{ course.teacher }}
+                </span>
+                <br>
+                 <a href="{% url 'update' course.id %}" class="btn btn-warning btn-sm"style="width: 100px;">Modifier</a>
+                 <form action="{% url 'delete_course' course.id %}" method="post">
+                  {% csrf_token %}
+                  <input type="submit" value="Supprimer" class="btn btn-danger">
+                </form>
+                {% endif %}
+              {% endfor %}
+            </td>
+            <td>
+              {% for course in courses_semaine %}
+                {% if course.day == 'Jeudi' %}
+                <span class="bg-info">
+                  {{ course.groupe }}
+                </span>
+                <span class="mx-1 text-danger">
+                  {{ course.classroom }}
+                </span>
+                <br>
+                <span>
+                  {{ course.start_time }} - {{ course.end_time }}
+                </span>
+                <span>
+                  {{ course.subject }}
+                </span>
+                <br>
+                <span>
+                  {{ course.masse_horraire }}
+                </span>
+                <br>
+                <span>
+                  {{ course.teacher }}
+                </span>
+                <br>
+                 <a href="{% url 'update' course.id %}" class="btn btn-warning btn-sm"style="width: 100px;">Modifier</a>
+                 <form action="{% url 'delete_course' course.id %}" method="post">
+                  {% csrf_token %}
+                  <input type="submit" value="Supprimer" class="btn btn-danger">
+                </form>
+                {% endif %}
+              {% endfor %}
+            </td>
+            <td>
+              {% for course in courses_semaine %}
+                {% if course.day == 'Vendredi' %}
+                <span class="bg-info">
+                  {{ course.groupe }}
+                </span>
+                <span class="mx-1 text-danger">
+                  {{ course.classroom }}
+                </span>
+                <br>
+                <span>
+                  {{ course.start_time }} - {{ course.end_time }}
+                </span>
+                <span>
+                  {{ course.subject }}
+                </span>
+                <br>
+                <span>
+                  {{ course.masse_horraire }}
+                </span>
+                <br>
+                <span>
+                  {{ course.teacher }}
+                </span>
+                <br>
+                 <a href="{% url 'update' course.id %}" class="btn btn-warning btn-sm"style="width: 100px;">Modifier</a>
+                 <form action="{% url 'delete_course' course.id %}" method="post">
+                  {% csrf_token %}
+                  <input type="submit" value="Supprimer" class="btn btn-danger">
+                </form>
+                {% endif %}
+              {% endfor %}
+            </td>
+            <td>
+              {% for course in courses_semaine %}
+                {% if course.day == 'Samedi' %}
+                <span class="bg-info">
+                  {{ course.groupe }}
+                </span>
+                <span class="mx-1 text-danger">
+                  {{ course.classroom }}
+                </span>
+                <br>
+                <span>
+                  {{ course.start_time }} - {{ course.end_time }}
+                </span>
+                <span>
+                  {{ course.subject }}
+                </span>
+                <br>
+                <span>
+                  {{ course.masse_horraire }}
+                </span>
+                <br>
+                <span>
+                  {{ course.teacher }}
+                </span>
+                <br>
+                 <a href="{% url 'update' course.id %}" class="btn btn-warning btn-sm"style="width: 100px;">Modifier</a>
+                 <form action="{% url 'delete_course' course.id %}" method="post">
+                  {% csrf_token %}
+                  <input type="submit" value="Supprimer" class="btn btn-danger">
+                </form>
+                {% endif %}
+              {% endfor %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {% endfor %}
+  </div>
+  <script>
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".sidebarBtn");
+    sidebarBtn.onclick = function() {
+    sidebar.classList.toggle("active");
+      if (sidebar.classList.contains("active")) {
+        sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+      } else
+        sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+    }
+ </script>
+
+</body>
+</html>

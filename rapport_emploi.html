@@ -1,0 +1,67 @@
+<div class="section">
+    <h2 class="section-title">Introduction</h2>
+    <p class="section-description">
+        Ce rapport présente en détail le processus de création et de modification de l'emploi du temps dans l'application. Il explique les différentes fonctionnalités mises en œuvre, les techniques utilisées et les avantages qu'elles apportent aux utilisateurs.
+    </p>
+</div>
+
+<div class="section">
+    <h2 class="section-title">Ajout d'un cours</h2>
+    <p class="section-description">
+        L'ajout d'un cours permet aux utilisateurs de saisir les détails d'un cours, tels que le titre, l'heure, la salle, etc., et de l'enregistrer dans l'emploi du temps. Voici les étapes clés du processus :
+    </p>
+    <ol>
+        <li>Récupération des données du formulaire : Lorsque l'utilisateur soumet le formulaire d'ajout de cours, les données sont récupérées à partir de la requête.</li>
+        <li>Validation des données : Les données sont validées pour s'assurer qu'elles respectent les contraintes définies, telles que la présence d'un titre de cours et une heure valide.</li>
+        <li>Enregistrement du cours : Si les données sont valides, le cours est enregistré dans la base de données à l'aide de la méthode `save()` du formulaire.</li>
+        <li>Actualisation de l'emploi du temps : L'emploi du temps est actualisé en récupérant tous les cours de la base de données et en les triant par semaine.</li>
+        <li>Message de confirmation : Un message de confirmation est affiché à l'utilisateur pour lui indiquer que son cours a été ajouté avec succès.</li>
+    </ol>
+</div>
+
+<div class="section">
+    <h2 class="section-title">Affichage de l'emploi du temps</h2>
+    <p class="section-description">
+        L'affichage de l'emploi du temps permet aux utilisateurs de visualiser tous les cours enregistrés dans une présentation claire et organisée. Voici les étapes du processus :
+    </p>
+    <ol>
+        <li>Récupération des cours : Tous les cours sont récupérés de la base de données et triés par ordre croissant selon la semaine.</li>
+        <li>Regroupement des cours par semaine : Les cours sont regroupés par semaine à l'aide de la fonction `groupby()` de Python. Cela permet de présenter les cours de manière structurée dans le template 'etreP.html'.</li>
+        <li>Affichage de l'emploi du temps : Les cours sont affichés dans le template 'etreP.html' en utilisant des boucles pour parcourir les semaines et les cours de chaque semaine.</li>
+    </ol>
+</div>
+
+<div class="section">
+    <h2 class="section-title">Modification d'un cours</h2>
+    <p class="section-description">
+        La modification d'un cours permet aux utilisateurs de mettre à jour les détails d'un cours existant. Voici les étapes du processus :
+    </p>
+    <ol>
+        <li>Récupération du cours à modifier : Lorsque l'utilisateur sélectionne un cours à modifier, le cours correspondant est récupéré de la base de données.</li>
+        <li>Pré-remplissage du formulaire : Le formulaire de modification est pré-rempli avec les détails actuels du cours.</li>
+        <li>Validation des données : Les données du formulaire de modification sont validées pour s'assurer qu'elles respectent les contraintes définies.</li>
+        <li>Enregistrement des modifications : Si les données sont valides, les modifications sont enregistrées dans la base de données.</li>
+        <li>Notification aux utilisateurs : Une notification est envoyée aux utilisateurs concernés pour les informer des modifications apportées à l'emploi du temps.</li>
+        <li>Message de confirmation : Un message de confirmation est affiché à l'utilisateur pour lui indiquer que les modifications ont été enregistrées avec succès.</li>
+    </ol>
+</div>
+
+<div class="section">
+    <h2 class="section-title">Suppression d'un cours</h2>
+    <p class="section-description">
+        La suppression d'un cours permet aux utilisateurs de retirer un cours de l'emploi du temps. Voici les étapes du processus :
+    </p>
+    <ol>
+        <li>Récupération du cours à supprimer : Lorsque l'utilisateur sélectionne un cours à supprimer, le cours correspondant est récupéré de la base de données.</li>
+        <li>Suppression du cours : Le cours est supprimé de la base de données.</li>
+        <li>Notification aux utilisateurs : Une notification est envoyée aux utilisateurs concernés pour les informer de la suppression du cours.</li>
+        <li>Redirection vers l'emploi du temps : L'utilisateur est redirigé vers la page d'affichage de l'emploi du temps après la suppression.</li>
+    </ol>
+</div>
+
+<div class="section">
+    <h2 class="section-title">Conclusion</h2>
+    <p class="section-description">
+        En conclusion, le processus de création, modification et suppression de l'emploi du temps dans l'application offre aux utilisateurs une interface conviviale pour gérer leurs cours. Les fonctionnalités intégrées de Django, telles que la validation des formulaires, le tri des cours et la gestion des messages, simplifient la mise en œuvre de ces fonctionnalités et améliorent l'expérience utilisateur. Grâce à ce système, les utilisateurs peuvent facilement ajouter, modifier et supprimer des cours, ce qui facilite la planification de leur emploi du temps.
+    </p>
+</div>

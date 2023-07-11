@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rapport - Processus de Login et d'Inscription</title>
+</head>
+<body>
+  <h1>Processus de Login et d'Inscription</h1>
+
+  <h2>Inscription (register)</h2>
+  <p>
+    Lorsque vous souhaitez vous inscrire sur la plateforme, vous devez remplir un formulaire contenant plusieurs champs tels que le nom d'utilisateur, l'adresse e-mail, le matricule, le prénom, le nom et le mot de passe. Ce formulaire est soumis en utilisant la méthode POST.
+  </p>
+  <p>
+    Une fois que vous avez soumis le formulaire, les données sont récupérées dans la vue correspondante dans Django en utilisant la méthode request.POST.get(). Les données saisies sont stockées dans des variables telles que username, email, matricule, firstname, lastname, password et password1.
+  </p>
+  <p>
+    Le système effectue ensuite plusieurs vérifications pour s'assurer de la validité des informations fournies par l'utilisateur :
+  </p>
+  <ul>
+    <li>Vérification de l'unicité du nom d'utilisateur : Une requête est envoyée à la base de données pour vérifier si un utilisateur avec le même nom d'utilisateur existe déjà. Si c'est le cas, un message d'erreur est affiché et l'utilisateur est redirigé vers la page d'inscription.</li>
+    <li>Vérification de l'unicité de l'adresse e-mail : Une requête est envoyée à la base de données pour vérifier si un utilisateur avec la même adresse e-mail existe déjà. Si c'est le cas, un message d'erreur est affiché et l'utilisateur est redirigé vers la page d'inscription.</li>
+    <li>Vérification de la validité du nom d'utilisateur : Une vérification est effectuée pour s'assurer que le nom d'utilisateur est alphanumérique. Si ce n'est pas le cas, un message d'erreur est affiché et l'utilisateur est redirigé vers la page d'inscription.</li>
+    <li>Vérification de la correspondance des mots de passe : Les mots de passe saisis dans les champs "password" et "password1" sont comparés pour s'assurer qu'ils correspondent. Si ce n'est pas le cas, un message d'erreur est affiché et l'utilisateur est redirigé vers la page d'inscription.</li>
+    <li>Vérification de la validité du matricule : Une requête est envoyée à la base de données pour vérifier si le matricule saisi est valide. Si ce n'est pas le cas, un message d'erreur est affiché et l'utilisateur est redirigé vers la page d'inscription.</li>
+  </ul>
+  <p>
+    Si toutes les vérifications sont réussies, un nouvel utilisateur est créé en utilisant la méthode create_user() de la classe User de Django. Les informations telles que le nom d'utilisateur, l'adresse e-mail, le mot de passe et le statut d'étudiant sont enregistrées dans la base de données. De plus, le prénom et le nom de l'utilisateur sont associés à son compte en utilisant les attributs first_name et last_name.
+  </p>
+  <p>
+    Un message de succès est affiché pour informer l'utilisateur que son compte a été créé avec succès.
+  </p>
+  <p>
+    Ensuite, un e-mail de bienvenue est envoyé à l'utilisateur pour le saluer sur la plateforme. Cela est réalisé en utilisant la fonction send_mail() de Django pour envoyer un e-mail au format HTML contenant un sujet et un message personnalisé.
+  </p>
+  <p>
+    De plus, un e-mail de confirmation est envoyé à l'utilisateur pour confirmer son adresse e-mail. Cela est réalisé en utilisant la fonction render_to_string() pour générer le contenu du message à partir d'un template HTML. Le lien de confirmation contient des informations telles que le nom de l'utilisateur, le domaine de la plateforme, l'identifiant utilisateur encodé et un jeton généré à l'aide de la classe TokenGenerator.
+  </p>
+
+  <h2>Connexion (login)</h2>
+  <p>
+    Lorsque vous souhaitez vous connecter à la plateforme, vous devez fournir votre nom d'utilisateur et votre mot de passe dans un formulaire. Ce formulaire est également soumis en utilisant la méthode POST.
+  </p>
+  <p>
+    Une fois que vous avez soumis le formulaire, les données sont récupérées dans la vue correspondante dans Django en utilisant la méthode request.POST.get(). Les données de connexion, à savoir le nom d'utilisateur et le mot de passe, sont stockées dans des variables.
+  </p>
+  <p>
+    Le système utilise la fonction authenticate() de Django pour vérifier si les informations d'identification fournies sont valides. Si les informations sont valides, l'utilisateur est considéré comme authentifié et une session est créée pour lui. L'utilisateur est ensuite redirigé vers la page du tableau de bord de l'étudiant (my_dashboard_student.html) en utilisant la fonction render(). De plus, le prénom de l'utilisateur est passé en tant que paramètre pour personnaliser l'affichage de la page.
+  </p>
+  <p>
+    Si les informations d'identification ne sont pas valides, plusieurs cas sont traités :
+  </p>
+  <ul>
+    <li>Mauvaise authentification : Si les informations d'identification fournies ne correspondent à aucun compte utilisateur, un message d'erreur est affiché.</li>
+    <li>Compte non activé : Si un compte utilisateur correspondant à l'identifiant fourni est trouvé, mais le compte n'est pas activé (is_active = False), un message d'erreur est affiché pour informer l'utilisateur qu'il doit d'abord confirmer son adresse e-mail avant de pouvoir se connecter.</li>
+  </ul>
+
+  <h2>Déconnexion (logout)</h2>
+  <p>
+    Lorsque vous souhaitez vous déconnecter de la plateforme, vous pouvez cliquer sur le lien de déconnexion. Cela enverra une requête à la vue correspondante dans Django, où la fonction auth_logout() est appelée pour mettre fin à la session de l'utilisateur. Un message de succès est affiché pour informer l'utilisateur qu'il a été déconnecté.
+  </p>
+
+  <h2>Activation du compte (activate)</h2>
+  <p>
+    Lorsqu'un utilisateur s'inscrit sur la plateforme, un e-mail de confirmation contenant un lien d'activation est envoyé à son adresse e-mail. Lorsque l'utilisateur clique sur ce lien, une requête est envoyée à la vue d'activation dans Django avec l'identifiant utilisateur encodé (uidb64) et le jeton de confirmation (token) en tant que paramètres.
+  </p>
+  <p>
+    Dans la vue d'activation, les paramètres sont utilisés pour récupérer l'utilisateur correspondant dans la base de données. Si l'utilisateur existe et que le jeton de confirmation est valide, le compte de l'utilisateur est activé en modifiant la valeur de is_active à True. Un message de succès est affiché pour informer l'utilisateur que son compte a été activé avec succès.
+  </p>
+  <p>
+    Si l'utilisateur n'existe pas ou si le jeton de confirmation n'est pas valide, un message d'erreur est affiché.
+  </p>
+
+  <h2>Conclusion</h2>
+  <p>
+    Le processus de login et d'inscription dans l'application est une étape cruciale pour permettre aux utilisateurs de créer un compte, de s'authentifier et d'accéder aux fonctionnalités de la plateforme. Django fournit des fonctionnalités intégrées telles que la création d'utilisateurs, l'authentification et la gestion des sessions pour faciliter la mise en œuvre de ce processus.
+  </p>
+  <p>
+    En utilisant des méthodes appropriées pour la validation des données, la génération de jetons de confirmation et l'envoi d'e-mails, les utilisateurs peuvent s'inscrire, confirmer leur adresse e-mail, se connecter et interagir avec l'application en toute sécurité.
+  </p>
+
+</body>
+</html>
